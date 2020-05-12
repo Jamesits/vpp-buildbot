@@ -1,0 +1,46 @@
+name: $(Date:yyyyMMdd).$(Rev:r)
+variables:
+  MAKE_VERBOSE: "0"
+  MAKE_PLATFORM: "vpp"
+  MAKE_TAG: "vpp" # "vpp" or "vpp_debug"
+
+trigger:
+  batch: true
+  branches:
+    include: [ "master" ]
+  paths:
+    exclude: [ "README.md" ]
+
+jobs:
+  - job: build
+    displayName: "build"
+    pool:
+      vmImage: "ubuntu-latest"
+    container:
+      image: "$(CONTAINER)"
+      options: --user 0
+    workspace:
+      clean: all
+    timeoutInMinutes: 120
+
+    strategy:
+      matrix:
+        debian-10-vpp-latest:
+          CONTAINER: 'debian:buster-slim'
+          VPP_BRANCH: 'master'
+        debian-10-vpp-2001:
+          CONTAINER: 'debian:buster-slim'
+          VPP_BRANCH: 'stable/2001' # if using https://gerrit.fd.io/r/vpp, use 'tag/v20.01'
+
+    steps:
+    - bash: './build.sh'
+      displayName: 'build'
+
+    - bash: |
+        cp -r vpp/build-root ${BUILD_ARTIFACTSTAGINGDIRECTORY}
+      displayName: "copy artifacts"
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact'
+      inputs:
+        artifactName: '$(System.JobName)'
