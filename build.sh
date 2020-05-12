@@ -7,4 +7,4 @@ docker run \
     --workdir "/root" \
     --name vpp-builder \
     --env-file <( env| cut -f1 -d= ) \
-    $(CONTAINER) bash /root/build_docker.sh
+    ${CONTAINER} bash /root/build_docker.sh
