@@ -1,8 +1,10 @@
 name: $(Date:yyyyMMdd).$(Rev:r)
 variables:
-  MAKE_VERBOSE: "0"
+  MAKE_VERBOSE: "0" # "0" or "1"
   MAKE_PLATFORM: "vpp"
   MAKE_TAG: "vpp" # "vpp" or "vpp_debug"
+  GIT_VPP_URL: "https://github.com/FDio/vpp.git"  # if using https://gerrit.fd.io/r/vpp, VPP_BRANCH should be something like 'tag/v20.01'
+  GIT_VPPSB_URL: "https://gerrit.fd.io/r/vppsb"
 
 trigger:
   batch: true
@@ -10,6 +12,14 @@ trigger:
     include: [ "master" ]
   paths:
     exclude: [ "README.md" ]
+
+schedules:
+  - cron: "0 0 * * *"
+    displayName: Daily midnight build
+    branches:
+      include:
+      - master
+    always: true
 
 jobs:
   - job: build
@@ -30,7 +40,7 @@ jobs:
           VPP_BRANCH: 'master'
         debian-10-vpp-2001:
           CONTAINER: 'debian:buster-slim'
-          VPP_BRANCH: 'stable/2001' # if using https://gerrit.fd.io/r/vpp, use 'tag/v20.01'
+          VPP_BRANCH: 'stable/2001'
 
     steps:
     - bash: './build.sh'
@@ -39,8 +49,10 @@ jobs:
     - bash: |
         cp -r vpp/build-root ${BUILD_ARTIFACTSTAGINGDIRECTORY}
       displayName: "copy artifacts"
+      condition: always()
 
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Artifact'
       inputs:
         artifactName: '$(System.JobName)'
+      condition: always()
