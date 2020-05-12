@@ -16,9 +16,9 @@ jobs:
     displayName: "build"
     pool:
       vmImage: "ubuntu-latest"
-    container:
-      image: "$(CONTAINER)"
-      options: --user 0
+    # container:
+    #   image: "$(CONTAINER)"
+    #   options: --user 0
     workspace:
       clean: all
     timeoutInMinutes: 120
