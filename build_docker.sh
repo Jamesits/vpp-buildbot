@@ -1,14 +1,17 @@
 #!/bin/bash
-# set -Eeuo pipefail
+set -Eeuo pipefail
 set -x
 
 MAKE_ARGS="UNATTENDED=y V=${MAKE_VERBOSE} PLATFORM=${MAKE_PLATFORM} TAG=${MAKE_TAG}"
 declare -a VPPSB_PLUGINS=(
-	"RXTXRPT"
+	"netlink"
+	"router"
+	"turbotap"
 )
+export DEBIAN_FRONTEND=noninteractive
 
 apt-get update -y
-apt-get install -y git build-essential
+apt-get install -y git build-essential sudo python3
 
 git clone https://github.com/FDio/vpp.git
 git clone https://gerrit.fd.io/r/vppsb
