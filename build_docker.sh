@@ -4,7 +4,7 @@ set -x
 
 export DEBIAN_FRONTEND=noninteractive
 MAKE_ARGS="UNATTENDED=y V=${MAKE_VERBOSE} PLATFORM=${MAKE_PLATFORM} TAG=${MAKE_TAG} -j"
-declare -a VPPSB_PLUGINS=(
+declare -a VPPSB_PLUGINS_LINK=(
 	"netlink"
 	"router"
 	"turbotap"
@@ -17,7 +17,7 @@ declare -a VPP_PLUGINS_INSTALL=(
 )
 
 apt-get update -y
-apt-get install -y git build-essential sudo python3
+apt-get install -y git build-essential sudo python3 rsync
 
 git clone --recursive "${GIT_VPP_URL}" "vpp"
 git clone --recursive "${GIT_VPPSB_URL}" "vppsb"
@@ -25,7 +25,7 @@ git clone --recursive "${GIT_VPPSB_URL}" "vppsb"
 cd vpp
 git checkout "${VPP_BRANCH}"
 
-for PLUGIN in "${VPPSB_PLUGINS[@]}"; do
+for PLUGIN in "${VPPSB_PLUGINS_LINK[@]}"; do
     # link necessary files in
     ln -sf "../vppsb/${PLUGIN}"
     ln -sf "../../../vppsb/${PLUGIN}/${PLUGIN}.mk" "build-data/packages/"
@@ -36,15 +36,41 @@ make ${MAKE_ARGS} bootstrap # only needed on old versions
 make ${MAKE_ARGS} install-ext-deps
 make ${MAKE_ARGS} build-release
 
-for PLUGIN in "${VPP_PLUGINS_INSTALL[@]}"; do
-    # build the plugin (let them fail)
-    pushd build-root/
-    make ${MAKE_ARGS} ${PLUGIN}-install || echo "WARNING: ${PLUGIN} build failed!"
-    popd
-done
-
+# build debs
 make ${MAKE_ARGS} pkg-deb
 make ${MAKE_ARGS} vom-pkg-deb || true # known to fail
+
+# get rte_* headers for turbotap plugin
+apt-get install -y libdpdk-dev
+cp -n /usr/include/x86_64-linux-gnu/dpdk/*.h /usr/include/vnet/devices/dpdk/
+cp -n /usr/include/x86_64-linux-gnu/dpdk/*.h /usr/include/
+cp -nr /usr/include/dpdk/* /usr/include/
+
+# install the debs so plugins can find headers during build
+pushd build-root/
+dpkg -i *.deb
+# fix dependencies
+apt-get install -fy
+popd
+
+# fix headers for router plugin
+# never mind, it is going to fail anyway
+cp -n src/vnet/ip-neighbor/ip6_neighbor.h /usr/include/vnet/ip-neighbor/
+cp -n src/vnet/ip-neighbor/ip6_neighbor.h /usr/include/vnet/ip/
+cp -n src/vnet/ip/ip6_link.h /usr/include/vnet/ip/
+cp -n src/vnet/adj/*.h /usr/include/vnet/adj/
+cp -n src/vnet/arp/*.h /usr/include/vnet/arp/
+cp -n src/vnet/arp/arp.h /usr/include/vnet/ethernet/
+cp -n src/plugins/dpdk/device/*.h /usr/include/vnet/devices/dpdk/
+
+for PLUGIN in "${VPP_PLUGINS_INSTALL[@]}"; do
+    pushd build-root/
+    # build the plugin (let them fail)
+    make ${MAKE_ARGS} ${PLUGIN}-install || echo "WARNING: ${PLUGIN} build failed!"
+    # install its headers so other plugins can link to it
+    rsync -avr install-${MAKE_TAG}-native/${PLUGIN}/include/ /usr/include
+    popd
+done
 
 # archive artifacts
 # note that if $MAKE_TAG is empty, the directory is build-native and install-native
