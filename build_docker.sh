@@ -3,6 +3,9 @@ set -Eeuo pipefail
 set -x
 
 export DEBIAN_FRONTEND=noninteractive
+export LANG=C.UTF-8
+export LC_CTYPE=C.UTF-8
+export LC_ALL=C.UTF-8
 MAKE_ARGS="UNATTENDED=y V=${MAKE_VERBOSE} PLATFORM=${MAKE_PLATFORM} TAG=${MAKE_TAG} -j"
 declare -a VPPSB_PLUGINS_LINK=(
 	"netlink"
@@ -42,14 +45,14 @@ make ${MAKE_ARGS} pkg-deb
 make ${MAKE_ARGS} vom-pkg-deb || true # known to fail
 
 # get rte_* headers for turbotap plugin
-apt-get install -y libdpdk-dev
+# apt-get install -y libdpdk-dev
 export LIBRARY_PATH=$(pwd)/src:/usr/include/x86_64-linux-gnu/dpdk:/usr/include/dpdk:/usr/local/include/x86_64-linux-gnu:/usr/local/include:/usr/include/x86_64-linux-gnu:/usr/include:${LIBRARY_PATH:-}
 
 # fix headers for router plugin
 # never mind, plugin build is going to fail anyway
-cp -n src/vnet/ip-neighbor/ip6_neighbor.h src/vnet/ip/ || true
-cp -n src/vnet/arp/arp.h src/vnet/ethernet/ || true
-cp -n src/plugins/dpdk/device/*.h src/vnet/devices/dpdk/ || true
+# cp -n src/vnet/ip-neighbor/ip6_neighbor.h src/vnet/ip/ || true
+# cp -n src/vnet/arp/arp.h src/vnet/ethernet/ || true
+# cp -n src/plugins/dpdk/device/*.h src/vnet/devices/dpdk/ || true
 
 for PLUGIN in "${VPP_PLUGINS_INSTALL[@]}"; do
     pushd build-root/
