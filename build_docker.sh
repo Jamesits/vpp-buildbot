@@ -8,18 +8,19 @@ declare -a VPPSB_PLUGINS=(
 	"netlink"
 	"router"
 	"turbotap"
-    "flowtable"
-    "vcl-ldpreload"
-    "vhost-test"
-    "vpp-bootstrap"
-    "vpp-userdemo"
+)
+declare -a VPP_PLUGINS_INSTALL=(
+    "sample-plugin"
+    "netlink"
+    "router"
+    "turbotap"
 )
 
 apt-get update -y
 apt-get install -y git build-essential sudo python3
 
-git clone "${GIT_VPP_URL}" "vpp"
-git clone "${GIT_VPPSB_URL}" "vppsb"
+git clone --recursive "${GIT_VPP_URL}" "vpp"
+git clone --recursive "${GIT_VPPSB_URL}" "vppsb"
 
 cd vpp
 git checkout "${VPP_BRANCH}"
@@ -31,10 +32,11 @@ for PLUGIN in "${VPPSB_PLUGINS[@]}"; do
 done
 
 make ${MAKE_ARGS} install-dep
+make ${MAKE_ARGS} bootstrap # only needed on old versions
 make ${MAKE_ARGS} install-ext-deps
 make ${MAKE_ARGS} build-release
 
-for PLUGIN in "${VPPSB_PLUGINS[@]}"; do
+for PLUGIN in "${VPP_PLUGINS_INSTALL[@]}"; do
     # build the plugin (let them fail)
     pushd build-root/
     make ${MAKE_ARGS} ${PLUGIN}-install || echo "WARNING: ${PLUGIN} build failed!"

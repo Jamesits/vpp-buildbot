@@ -49,6 +49,7 @@ jobs:
     - bash: |
         # recursive intentionally disabled
         cp vpp/build-root/* ${BUILD_ARTIFACTSTAGINGDIRECTORY}
+        exit 0
       displayName: "copy artifacts"
       condition: always()
 
