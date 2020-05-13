@@ -104,7 +104,7 @@ make: *** [Makefile:777: dpdk-find-source] Error 1
 
 ### Things that do not always work
 
-`vppsb` is not release tagged along with `vpp` and only has a `master` branch. So basically you'd expect anything in `vppsb` to break at any time. Plus there is no one really maintaining `vppsb`, also it is used everywhere in the docs, demos and quickstarts. 
+`vppsb` is not release tagged along with `vpp` and only has a `master` branch. So basically you'd expect anything in `vppsb` to break at any time. Plus there is no one really maintaining `vppsb`, although it is used everywhere in the docs, demos and quickstarts. 
 
 VPP v20.01 _sometimes_ fail with the following error during a `make build-release`:
 
