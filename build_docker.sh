@@ -28,7 +28,7 @@ for PLUGIN in "${VPPSB_PLUGINS[@]}"; do
     # link necessary files in
     ln -sf "../vppsb/${PLUGIN}"
     pushd build-data/packages/
-    ln -sf "../../../${PLUGIN}/${PLUGIN}.mk"
+    ln -sf "../../../vppsb/${PLUGIN}/${PLUGIN}.mk"
     popd
 done
 
@@ -48,6 +48,6 @@ make "${MAKE_ARGS}" vom-pkg-deb || true # known to fail
 
 # archive artifacts
 cd build-data/
-for DIRECTORY in build-vpp-native install-vpp-native; do
-    tar -xzf "${DIRECTORY}".tar.gz "${DIRECTORY}"
+for DIRECTORY in "build-${MAKE_TAG}-native" "install-${MAKE_TAG}-native"; do
+    tar -czf "${DIRECTORY}".tar.gz "${DIRECTORY}"
 done
