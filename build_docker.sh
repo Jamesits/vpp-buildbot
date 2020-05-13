@@ -43,6 +43,7 @@ make ${MAKE_ARGS} vom-pkg-deb || true # known to fail
 
 # get rte_* headers for turbotap plugin
 apt-get install -y libdpdk-dev
+export LIBRARY_PATH=${LIBRARY_PATH:-}  
 export LIBRARY_PATH=$LIBRARY_PATH:/usr/include/dpdk:/usr/include/x86_64-linux-gnu/dpdk:$(pwd)/src
 
 # fix headers for router plugin
