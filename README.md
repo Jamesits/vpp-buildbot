@@ -1,6 +1,6 @@
 # vpp-buildbot
 
-Experimental nightly CI building [FD.io VPP](https://fd.io/) packages. Artifacts can be acquired from the CI.
+Experimental nightly CI building [FD.io VPP](https://fd.io/) packages. DEBs and Artifacts can be acquired from the CI.
 
 [![Build Status](https://dev.azure.com/nekomimiswitch/General/_apis/build/status/vpp-buildbot?branchName=master)](https://dev.azure.com/nekomimiswitch/General/_build/latest?definitionId=87&branchName=master)
 
@@ -23,6 +23,24 @@ Currently building plugins:
 * netlink
 
 ## Hall of Shame
+
+### Things that does not always work
+
+VPP v20.01 sometimes fail with the following error during a `make build-release`:
+
+```
+[987/1813] Building C object vnet/CMakeFiles/vnet.dir/arp/arp_api.c.o
+FAILED: vnet/CMakeFiles/vnet.dir/arp/arp_api.c.o 
+ccache /usr/lib/ccache/cc -DHAVE_FCNTL64 -DHAVE_MEMFD_CREATE -DWITH_LIBSSL=1 -Dvnet_EXPORTS -I/root/vpp/src -I. -Iinclude -Wno-address-of-packed-member -g -fPIC -Werror -Wall -march=corei7 -mtune=corei7-avx  -O2 -fstack-protector -DFORTIFY_SOURCE=2 -fno-common  -fPIC -MD -MT vnet/CMakeFiles/vnet.dir/arp/arp_api.c.o -MF vnet/CMakeFiles/vnet.dir/arp/arp_api.c.o.d -o vnet/CMakeFiles/vnet.dir/arp/arp_api.c.o   -c /root/vpp/src/vnet/arp/arp_api.c
+/root/vpp/src/vnet/arp/arp_api.c:23:10: fatal error: vpp/app/version.h: No such file or directory
+ #include <vpp/app/version.h>
+          ^~~~~~~~~~~~~~~~~~~
+compilation terminated.
+ninja: build stopped: subcommand failed.
+make[1]: *** [Makefile:695: vpp-build] Error 1
+make[1]: Leaving directory '/root/vpp/build-root'
+make: *** [Makefile:388: build-release] Error 2
+```
 
 ### Make targets that doesn't work
 
