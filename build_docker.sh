@@ -47,10 +47,10 @@ export LIBRARY_PATH=${LIBRARY_PATH:-}
 export LIBRARY_PATH=$LIBRARY_PATH:/usr/include/dpdk:/usr/include/x86_64-linux-gnu/dpdk:$(pwd)/src
 
 # fix headers for router plugin
-# never mind, it is going to fail anyway
-cp -n src/vnet/ip-neighbor/ip6_neighbor.h src/vnet/ip/
-cp -n src/vnet/arp/arp.h src/vnet/ethernet/
-cp -n src/plugins/dpdk/device/*.h src/vnet/devices/dpdk/
+# never mind, plugin build is going to fail anyway
+cp -n src/vnet/ip-neighbor/ip6_neighbor.h src/vnet/ip/ || true
+cp -n src/vnet/arp/arp.h src/vnet/ethernet/ || true
+cp -n src/plugins/dpdk/device/*.h src/vnet/devices/dpdk/ || true
 
 for PLUGIN in "${VPP_PLUGINS_INSTALL[@]}"; do
     pushd build-root/
