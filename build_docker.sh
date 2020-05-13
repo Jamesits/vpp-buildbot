@@ -7,11 +7,16 @@ export LANG=C.UTF-8
 export LC_CTYPE=C.UTF-8
 export LC_ALL=C.UTF-8
 MAKE_ARGS="UNATTENDED=y V=${MAKE_VERBOSE} PLATFORM=${MAKE_PLATFORM} TAG=${MAKE_TAG} -j"
+
+# link files from vppsb repo to vpp
 declare -a VPPSB_PLUGINS_LINK=(
 	"netlink"
 	"router"
 	"turbotap"
 )
+
+# plugins to build
+# note: router depends on netlink, so netlink should be built before router
 declare -a VPP_PLUGINS_INSTALL=(
     "sample-plugin"
     "netlink"
@@ -22,7 +27,7 @@ declare -a VPP_PLUGINS_INSTALL=(
 apt-get update -y
 apt-get install -y git build-essential sudo python3
 
-git config --global core.autocrlf input || true
+git config --global core.autocrlf input || true # fails on Azure DevOps
 git clone --recursive "${GIT_VPP_URL}" "vpp"
 git clone --recursive "${GIT_VPPSB_URL}" "vppsb"
 
@@ -46,6 +51,8 @@ make ${MAKE_ARGS} vom-pkg-deb || true # known to fail
 
 # get rte_* headers for turbotap plugin
 # apt-get install -y libdpdk-dev
+
+# fix include path
 export LIBRARY_PATH=$(pwd)/src:/usr/include/x86_64-linux-gnu/dpdk:/usr/include/dpdk:/usr/local/include/x86_64-linux-gnu:/usr/local/include:/usr/include/x86_64-linux-gnu:/usr/include:${LIBRARY_PATH:-}
 
 # fix headers for router plugin
