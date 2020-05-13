@@ -1,6 +1,6 @@
 # vpp-buildbot
 
-Experimental nightly CI building [FD.io VPP](https://fd.io/) packages. DEBs and Artifacts can be acquired from the CI.
+Experimental nightly CI building [FD.io VPP](https://fd.io/) packages. DEBs and artifacts can be acquired from the CI.
 
 [![Build Status](https://dev.azure.com/nekomimiswitch/General/_apis/build/status/vpp-buildbot?branchName=master)](https://dev.azure.com/nekomimiswitch/General/_build/latest?definitionId=87&branchName=master)
 
