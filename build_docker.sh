@@ -27,27 +27,27 @@ git checkout "${VPP_BRANCH}"
 for PLUGIN in "${VPPSB_PLUGINS[@]}"; do
     # link necessary files in
     ln -sf "../vppsb/${PLUGIN}"
-    pushd build-data/packages/
-    ln -sf "../../../vppsb/${PLUGIN}/${PLUGIN}.mk"
-    popd
+    ln -sf "../../../vppsb/${PLUGIN}/${PLUGIN}.mk" "build-data/packages/"
 done
 
-make "${MAKE_ARGS}" install-dep
-make "${MAKE_ARGS}" install-ext-deps
-make "${MAKE_ARGS}" build-release
+make ${MAKE_ARGS} install-dep
+make ${MAKE_ARGS} install-ext-deps
+make ${MAKE_ARGS} build-release
 
 for PLUGIN in "${VPPSB_PLUGINS[@]}"; do
     # build the plugin (let them fail)
     pushd build-root/
-    make "${MAKE_ARGS}" ${PLUGIN}-install || echo "WARNING: ${PLUGIN} build failed!"
+    make ${MAKE_ARGS} ${PLUGIN}-install || echo "WARNING: ${PLUGIN} build failed!"
     popd
 done
 
-make "${MAKE_ARGS}" pkg-deb
-make "${MAKE_ARGS}" vom-pkg-deb || true # known to fail
+make ${MAKE_ARGS} pkg-deb
+make ${MAKE_ARGS} vom-pkg-deb || true # known to fail
 
 # archive artifacts
-cd build-data/
+# note that if $MAKE_TAG is empty, the directory is build-native and install-native
+pushd build-root/
 for DIRECTORY in "build-${MAKE_TAG}-native" "install-${MAKE_TAG}-native"; do
     tar -czf "${DIRECTORY}".tar.gz "${DIRECTORY}"
 done
+popd
