@@ -41,12 +41,12 @@ jobs:
         debian-10-vpp-2001:
           CONTAINER: 'debian:buster-slim'
           VPP_BRANCH: 'stable/2001'
-        debian-10-vpp-1710:
+        debian-10-vpp-1901:
           CONTAINER: 'debian:buster-slim'
-          VPP_BRANCH: 'stable/1710'
-        debian-10-vpp-1701:
+          VPP_BRANCH: 'stable/1901'
+        debian-10-vpp-1801:
           CONTAINER: 'debian:buster-slim'
-          VPP_BRANCH: 'stable/1701'
+          VPP_BRANCH: 'stable/1801'
 
     steps:
     - bash: './build.sh'

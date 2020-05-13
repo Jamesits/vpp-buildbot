@@ -6,11 +6,14 @@ Experimental nightly CI building [FD.io VPP](https://fd.io/) packages. Artifacts
 
 Currently building branches:
 
-* v17.01
-* v17.10
 * v20.01
 * master
 
 Currently building distros:
 
 * Debian 10
+
+Branch status:
+
+* v17.01: `Makefile:169: *** "This option currently works only on Ubuntu or Centos systems".  Stop.`
+* v17.10: `make: *** [Makefile:264: install-dep] Error 100`
