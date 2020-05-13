@@ -11,7 +11,7 @@ trigger:
   branches:
     include: [ "master" ]
   paths:
-    exclude: [ "README.md" ]
+    exclude: [ "README.md", "LICENSE" ]
 
 schedules:
   - cron: "0 0 * * *"
