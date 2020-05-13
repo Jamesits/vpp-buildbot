@@ -19,6 +19,7 @@ declare -a VPP_PLUGINS_INSTALL=(
 apt-get update -y
 apt-get install -y git build-essential sudo python3
 
+git config --global core.autocrlf input
 git clone --recursive "${GIT_VPP_URL}" "vpp"
 git clone --recursive "${GIT_VPPSB_URL}" "vppsb"
 
@@ -32,8 +33,8 @@ for PLUGIN in "${VPPSB_PLUGINS_LINK[@]}"; do
 done
 
 make ${MAKE_ARGS} install-dep
-make ${MAKE_ARGS} bootstrap # only needed on old versions
-make ${MAKE_ARGS} install-ext-deps
+make ${MAKE_ARGS} bootstrap # only needed on old versions (vpp <08.10)
+make ${MAKE_ARGS} install-ext-deps # (vpp >=08.10)
 make ${MAKE_ARGS} build-release
 
 # build debs
