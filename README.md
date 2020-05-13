@@ -24,9 +24,11 @@ Currently building plugins:
 
 ## Hall of Shame
 
-### Things that does not always work
+[🎵~Your build system is a hall of shame~🎵](https://www.youtube.com/watch?v=nSKp2StlS6s)
 
-VPP v20.01 sometimes fail with the following error during a `make build-release`:
+### Things that do not always work
+
+VPP v20.01 _sometimes_ fail with the following error during a `make build-release`:
 
 ```
 [987/1813] Building C object vnet/CMakeFiles/vnet.dir/arp/arp_api.c.o
@@ -42,16 +44,16 @@ make[1]: Leaving directory '/root/vpp/build-root'
 make: *** [Makefile:388: build-release] Error 2
 ```
 
-### Make targets that doesn't work
+### Make targets that do not work
 
 * vom-pkg-deb
 
-### vppsb plugins that doesn't build
+### vppsb plugins that do not build
 
  * router (code does not even compile)
  * turbotap (build system is broken)
 
-### Branch that doesn't build on distro other than Ubuntu and CentOS
+### Branch that do not build on distro other than Ubuntu and CentOS
 
 * v17.01 and earlier: `Makefile:169: *** "This option currently works only on Ubuntu or Centos systems".  Stop.`
 * v17.10 - v19.01: `make: *** [Makefile:264: install-dep] Error 100`
