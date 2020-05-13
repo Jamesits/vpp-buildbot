@@ -19,7 +19,7 @@ declare -a VPP_PLUGINS_INSTALL=(
 apt-get update -y
 apt-get install -y git build-essential sudo python3
 
-git config --global core.autocrlf input
+git config --global core.autocrlf input || true
 git clone --recursive "${GIT_VPP_URL}" "vpp"
 git clone --recursive "${GIT_VPPSB_URL}" "vppsb"
 
