@@ -30,7 +30,20 @@ make "${MAKE_ARGS}" pkg-deb
 make "${MAKE_ARGS}" vom-pkg-deb || true # known to fail
 
 for PLUGIN in "${VPPSB_PLUGINS[@]}"; do
+    # link necessary files in
     ln -sf "../vppsb/${PLUGIN}"
-    ln -sf "../../../${PLUGIN}/${PLUGIN}.mk" "build-data/packages/"
+    pushd build-data/packages/
+    ln -sf "../../../${PLUGIN}/${PLUGIN}.mk"
+    popd
+
+    # build the plugin (let them fail)
+    pushd build-data/
     make "${MAKE_ARGS}" ${PLUGIN}-install || echo "WARNING: ${PLUGIN} build failed!"
+    popd
+done
+
+# archive artifacts
+cd build-data/
+for DIRECTORY in build-*/ install-*; do
+    tar -xzf "${DIRECTORY}".tar.gz "${DIRECTORY}"
 done

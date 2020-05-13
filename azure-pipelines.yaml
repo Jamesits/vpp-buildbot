@@ -47,7 +47,8 @@ jobs:
       displayName: 'build'
 
     - bash: |
-        cp -r vpp/build-root ${BUILD_ARTIFACTSTAGINGDIRECTORY}
+        # recursive intentionally disabled
+        cp vpp/build-root/* ${BUILD_ARTIFACTSTAGINGDIRECTORY}
       displayName: "copy artifacts"
       condition: always()
 
@@ -55,4 +56,6 @@ jobs:
       displayName: 'Publish Artifact'
       inputs:
         artifactName: '$(System.JobName)'
+        parallel: true
+        ParallelCount: 8
       condition: always()
