@@ -55,6 +55,9 @@ for PLUGIN in "${VPP_PLUGINS_INSTALL[@]}"; do
     pushd build-root/
     # build the plugin (let them fail)
     make ${MAKE_ARGS} ${PLUGIN}-install || echo "WARNING: ${PLUGIN} build failed!"
+    # archive result
+    tar -czf "build-plugin-${PLUGIN}.tar.gz" "build-${MAKE_TAG}-native/${PLUGIN}"
+    tar -czf "install-plugin-${PLUGIN}.tar.gz" "install-${MAKE_TAG}-native/${PLUGIN}"
     # install its headers so other plugins can link to it
     export LIBRARY_PATH=$LIBRARY_PATH:$(pwd)/install-${MAKE_TAG}-native/${PLUGIN}/include
     popd
