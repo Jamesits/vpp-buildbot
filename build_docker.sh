@@ -6,7 +6,7 @@ export DEBIAN_FRONTEND=noninteractive
 export LANG=C.UTF-8
 export LC_CTYPE=C.UTF-8
 export LC_ALL=C.UTF-8
-MAKE_ARGS="UNATTENDED=y V=${MAKE_VERBOSE} PLATFORM=${MAKE_PLATFORM} TAG=${MAKE_TAG} -j"
+MAKE_ARGS="UNATTENDED=y V=${MAKE_VERBOSE} PLATFORM=${MAKE_PLATFORM} TAG=${MAKE_TAG}"
 
 # link files from vppsb repo to vpp
 declare -a VPPSB_PLUGINS_LINK=(
