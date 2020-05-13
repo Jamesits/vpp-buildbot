@@ -43,8 +43,7 @@ make ${MAKE_ARGS} vom-pkg-deb || true # known to fail
 
 # get rte_* headers for turbotap plugin
 apt-get install -y libdpdk-dev
-export LIBRARY_PATH=${LIBRARY_PATH:-}  
-export LIBRARY_PATH=$LIBRARY_PATH:/usr/include/dpdk:/usr/include/x86_64-linux-gnu/dpdk:$(pwd)/src
+export LIBRARY_PATH=$(pwd)/src:/usr/include/x86_64-linux-gnu/dpdk:/usr/include/dpdk:/usr/local/include/x86_64-linux-gnu:/usr/local/include:/usr/include/x86_64-linux-gnu:/usr/include:${LIBRARY_PATH:-}
 
 # fix headers for router plugin
 # never mind, plugin build is going to fail anyway
@@ -56,9 +55,9 @@ for PLUGIN in "${VPP_PLUGINS_INSTALL[@]}"; do
     pushd build-root/
     # build the plugin (let them fail)
     make ${MAKE_ARGS} ${PLUGIN}-install || echo "WARNING: ${PLUGIN} build failed!"
-    # archive result
-    tar -czf "build-plugin-${PLUGIN}.tar.gz" "build-${MAKE_TAG}-native/${PLUGIN}"
-    tar -czf "install-plugin-${PLUGIN}.tar.gz" "install-${MAKE_TAG}-native/${PLUGIN}"
+    # archive result (might fail if make fails)
+    tar -czf "build-plugin-${PLUGIN}.tar.gz" "build-${MAKE_TAG}-native/${PLUGIN}" || true
+    tar -czf "install-plugin-${PLUGIN}.tar.gz" "install-${MAKE_TAG}-native/${PLUGIN}" || true
     # install its headers so other plugins can link to it
     export LIBRARY_PATH=$LIBRARY_PATH:$(pwd)/install-${MAKE_TAG}-native/${PLUGIN}/include
     popd

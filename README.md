@@ -6,8 +6,8 @@ Experimental nightly CI building [FD.io VPP](https://fd.io/) packages. Artifacts
 
 Currently building branches:
 
-* v19.04
-* v19.08
+* v17.01
+* v17.10
 * v20.01
 * master
 
