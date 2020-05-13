@@ -24,7 +24,7 @@ Currently building plugins:
 
 ## Hall of Shame
 
-[🎵~Your build system is a hall of shame~🎵](https://www.youtube.com/watch?v=nSKp2StlS6s)
+[🎵\~Your build system is a hall of shame\~🎵](https://www.youtube.com/watch?v=nSKp2StlS6s)
 
 ### Things that do not always work
 
