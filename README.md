@@ -1,6 +1,6 @@
 # vpp-buildbot
 
-Experimental nightly CI building [FD.io VPP](https://fd.io/) packages. DEBs and artifacts can be acquired from the CI.
+Experimental nightly CI building [FD.io VPP](https://fd.io/) packages. DEBs and artifacts can be acquired from the CI. CI failure is usual. 
 
 [![Build Status](https://dev.azure.com/nekomimiswitch/General/_apis/build/status/vpp-buildbot?branchName=master)](https://dev.azure.com/nekomimiswitch/General/_build/latest?definitionId=87&branchName=master)
 
@@ -26,6 +26,8 @@ Currently building plugins:
 
 [🎵\~Your build system is a hall of shame\~🎵](https://www.youtube.com/watch?v=nSKp2StlS6s)
 
+VPP is a software engineering disaster. Here's why.
+
 ### Things that do not work
 
 #### Documentation
@@ -34,7 +36,18 @@ The documentation is outdated, unmaintained and not consistent. The mailing list
 
 #### Make targets that do not work
 
-* vom-pkg-deb
+**vom-pkg-deb**: build system is broken
+
+```
+@@@@ Installing vom @@@@
+[0/1] Install the project...
+-- Install configuration: ""
+-- Set runtime path of "/root/vpp/build-root/install-vpp-native/vom/lib/libvom.so.20.09" to "/root/vpp/build-root/install-vpp-native/vom/lib"
+ninja: error: unknown target 'package'
+make[1]: *** [/root/vpp/build-data/packages/vom.mk:44: vom-package-deb] Error 1
+make[1]: Leaving directory '/root/vpp/build-root'
+make: *** [Makefile:608: vom-pkg-deb] Error 2
+```
 
 #### `vppsb` plugins that do not build
 
