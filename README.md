@@ -119,7 +119,7 @@ make: *** [Makefile:777: dpdk-find-source] Error 1
 
 `vppsb` is not release tagged along with `vpp` and only has a `master` branch. So basically you'd expect anything in `vppsb` to break at any time. Plus there is no one really maintaining `vppsb`, although it is used everywhere in the docs, demos and quickstarts. 
 
-VPP v20.01 _sometimes_ fail with the following error during a `make build-release`:
+VPP v20.01 _sometimes_ fail with the following error during a `make -j build-release`:
 
 ```
 [987/1813] Building C object vnet/CMakeFiles/vnet.dir/arp/arp_api.c.o
@@ -134,6 +134,8 @@ make[1]: *** [Makefile:695: vpp-build] Error 1
 make[1]: Leaving directory '/root/vpp/build-root'
 make: *** [Makefile:388: build-release] Error 2
 ```
+
+(If no `-j`, it will always fail.)
 
 ### Distro Lock-in
 
