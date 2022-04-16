@@ -36,10 +36,10 @@ jobs:
     strategy:
       matrix:
         debian-11-vpp-latest:
-          CONTAINER: 'debian:bullesys-slim'
+          CONTAINER: 'debian:bullseye-slim'
           VPP_BRANCH: 'master'
         debian-11-vpp-2202:
-          CONTAINER: 'debian:bullesys-slim'
+          CONTAINER: 'debian:bullseye-slim'
           VPP_BRANCH: 'stable/2202'
 
     steps:
