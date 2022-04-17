@@ -38,8 +38,8 @@ jobs:
         debian-11-vpp-latest:
           CONTAINER: 'debian:bullseye-slim'
           VPP_BRANCH: 'master'
-        debian-11-vpp-2202:
-          CONTAINER: 'debian:bullseye-slim'
+        debian-10-vpp-2202:
+          CONTAINER: 'debian:buster-slim'
           VPP_BRANCH: 'stable/2202'
 
     steps:
